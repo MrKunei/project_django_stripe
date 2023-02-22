@@ -36,7 +36,7 @@ class DetailItemView(DetailView):
 
 
 class CreateCheckoutSessionView(View):
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         item = Item.objects.get(id=self.kwargs['pk'])
         YOUR_DOMAIN = "http://127.0.0.1:8000"
         checkout_session = stripe.checkout.Session.create(
@@ -63,4 +63,7 @@ class CreateCheckoutSessionView(View):
         return JsonResponse({
             'id': checkout_session.id
         })
+
+
+
 

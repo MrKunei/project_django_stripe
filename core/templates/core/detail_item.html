@@ -12,14 +12,12 @@
     <div class="product">
         <div class="description">
             <h3>Name: {{ object.name }}</h3>
-            <h4>Description: {{ object.description }}</h4>
-            <h5>Price: ${{ object.price }}</h5>
+            <p>Description: {{ object.description }}</p>
+            <p>Price: ${{ object.get_display_price }}</p>
         </div>
     </div>
-    <button type="button" id="checkout-button">Checkout</button>
-    <a href="{% url 'list_items' %}">
-            <button type="button" id="checkout-button">Back</button>
-        </a>
+    <button type="button" id="checkout-button">Buy</button>
+    <a href="{% url 'list_items' %}"><button type="button" id="checkout-button">Back</button></a>
 </section>
 
 {% csrf_token %}
@@ -30,7 +28,7 @@
     let checkoutButton = document.getElementById("checkout-button");
     checkoutButton.addEventListener("click", function () {
         fetch("{% url 'create_checkout_session' object.id %}", {
-            method: "POST",
+            method: "GET",
             headers: {
                 'X-CSRFToken': csrftoken
             }
