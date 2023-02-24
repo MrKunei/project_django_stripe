@@ -68,7 +68,7 @@ class OrderView(DetailView):
     template_name = 'core/detail_order.html'
 
     def get_object(self, queryset=None):
-        return Order.objects.get(id=self.kwargs['pk']).select_related('discount', 'tax').prefetch_related('item').first()
+        return Order.objects.filter(id=self.kwargs['pk']).select_related('discount', 'tax').prefetch_related('items').first()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -76,7 +76,7 @@ class OrderView(DetailView):
         unit_amount = items.aggregate(unit_amount=Sum('price'))['unit_amount']
         context.update({
             'items': items,
-            'unit_amount': unit_amount,
+            'unit_amount': unit_amount/100,
             "STRIPE_PUBLIC_KEY": settings.STRIPE_PUBLIC_KEY
         })
         return context
@@ -84,7 +84,7 @@ class OrderView(DetailView):
 
 class CreateOrderCheckoutSessionView(View):
     def get(self, request, *args, **kwargs):
-        order = Order.objects.get(id=self.kwargs['pk']).select_related('discount', 'tax').prefetch_related('item').first()
+        order = Order.objects.filter(id=self.kwargs['pk']).select_related('discount', 'tax').prefetch_related('item').first()
         items = order.items.all()
         discounts = []
         if order.discount:
