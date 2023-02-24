@@ -25,7 +25,7 @@
         </div>
     </div>
     <button type="button" id="checkout-button">Buy</button>
-    <a href="{% url 'list_items' %}"><button type="button" id="checkout-button">Back</button></a>
+    <a href="{% url 'list_items' %}"><button type="button" id="button">Back</button></a>
 </section>
 
 {% csrf_token %}
@@ -35,7 +35,7 @@
     let stripe = Stripe("{{ STRIPE_PUBLIC_KEY }}");
     let checkoutButton = document.getElementById("checkout-button");
     checkoutButton.addEventListener("click", function () {
-        fetch("{% url 'create_order_checkout_session' object.id %}", {
+        fetch("{% url 'create_order_checkout_session' pk=object.id %}", {
             method: "GET",
             headers: {
                 'X-CSRFToken': csrftoken
