@@ -84,7 +84,7 @@ class OrderView(DetailView):
 
 class CreateOrderCheckoutSessionView(View):
     def get(self, request, *args, **kwargs):
-        order = Order.objects.filter(id=self.kwargs['pk']).select_related('discount', 'tax').prefetch_related('item').first()
+        order = Order.objects.filter(id=self.kwargs['pk']).select_related('discount', 'tax').prefetch_related('items').first()
         items = order.items.all()
         discounts = []
         if order.discount:

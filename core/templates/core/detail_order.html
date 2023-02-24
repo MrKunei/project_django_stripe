@@ -15,13 +15,16 @@
           <ul>
             {% for item in items %}
           <li>
-            <h2>{{ item.name }}</h2>
-            <p>{{ item.description }}</p>
+            <h3>{{ item.name }}</h3>
             <p>Price: ${{ item.get_display_price }}</p>
           </li>
             {% endfor %}
           </ul>
-          <p>Sum: {{unit_amount}}</p>
+            <h2>Sum: $ {{unit_amount}}</h2>
+            <br>
+            <p>Discount: {{ object.discount.percent_off }} %</p>
+            <p>Tax: {{ object.tax.percentage }} %</p>
+
         </div>
     </div>
     <button type="button" id="checkout-button">Buy</button>
