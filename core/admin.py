@@ -20,4 +20,4 @@ class AdminTax(admin.ModelAdmin):
 
 @admin.register(Order)
 class AdminOrder(admin.ModelAdmin):
-    list_display = ('id', 'discount', 'tax', 'currency',)
+    list_display = ('id', 'discount', 'tax',)

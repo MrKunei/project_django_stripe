@@ -12,6 +12,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class ListItemsView(ListView):
+
     queryset = Item.objects.all()
     template_name = 'core/list_items.html'
 
@@ -100,8 +101,8 @@ class CreateOrderCheckoutSessionView(View):
             payment_method_types=['card'],
             line_items=[{
                 'price_data': {
-                    'currency': item.currency,
-                    'unit_amount': item.price,
+                    'currency': "usd",
+                    'unit_amount': int(item.price*settings.RUB_USD) if item.currency != 'usd' else item.price,
                     'product_data': {
                         'name': item.name,
                     },
@@ -115,3 +116,18 @@ class CreateOrderCheckoutSessionView(View):
             cancel_url=os.environ.get('DOMAIN') + '/cancel/',
         )
         return JsonResponse({'id': checkout_session.id})
+
+
+class CreatePaymentIntentView(View):
+    """
+    Реализация через PaymentIntent для Item
+    """
+    def get(self, request, *args, **kwargs):
+        item = Item.objects.get(id=self.kwargs['pk'])
+        payment_session = stripe.PaymentIntent.create(
+            amount=item.price,
+            currency=item.currency,
+            payment_method_types=["card"],
+            metadata={"integration_check": "accept_a_payment"},
+        )
+        return JsonResponse({"client_secret": payment_session.client_secret})

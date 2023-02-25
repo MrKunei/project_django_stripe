@@ -1,6 +1,6 @@
 from django.urls import path
 from core.views import ListItemsView, DetailItemView, CreateCheckoutSessionView, SuccessView, CancelView, OrderView, \
-    CreateOrderCheckoutSessionView
+    CreateOrderCheckoutSessionView, CreatePaymentIntentView
 
 urlpatterns = [
     path('', ListItemsView.as_view(), name='list_items'),

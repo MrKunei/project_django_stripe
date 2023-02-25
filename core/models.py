@@ -24,6 +24,9 @@ class Discount(models.Model):
     name = models.CharField(max_length=100, null=True)
     percent_off = models.PositiveIntegerField(default=0)
 
+    def __str__(self):
+        return f"{self.percent_off} %"
+
 
 class Tax(models.Model):
 
@@ -31,14 +34,12 @@ class Tax(models.Model):
     percentage = models.DecimalField(max_digits=4, decimal_places=2)
     inclusive = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"{self.percentage} %"
+
 
 class Order(models.Model):
-
-    class Currency(models.TextChoices):
-        USD = 'usd', 'usd'
-        RUB = 'rub', 'rub'
 
     items = models.ManyToManyField(Item, related_name='order')
     discount = models.ForeignKey(Discount, on_delete=models.PROTECT, related_name='order')
     tax = models.ForeignKey(Tax, on_delete=models.PROTECT, related_name='order')
-    currency = models.CharField(choices=Currency.choices, max_length=3, default=Currency.USD)

@@ -16,14 +16,13 @@
             {% for item in items %}
           <li>
             <h3>{{ item.name }}</h3>
-            <p>Price: ${{ item.get_display_price }}</p>
+            <p>Price: {{ item.get_display_price }} {{ item.currency }}</p>
           </li>
             {% endfor %}
           </ul>
-            <h2>Sum: $ {{unit_amount}}</h2>
             <br>
             <p>Discount: {{ object.discount.percent_off }} %</p>
-            <p>Tax: {{ object.tax.percentage }} %</p>
+            <p>Tax: {{ object.tax.percentage }} % {% if object.tax.inclusive %} inclusive in price {% endif %}</p>
 
         </div>
     </div>

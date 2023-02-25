@@ -13,7 +13,7 @@
         <div class="description">
             <h3>Name: {{ object.name }}</h3>
             <p>Description: {{ object.description }}</p>
-            <p>Price: ${{ object.get_display_price }}</p>
+            <p>Price: {{ object.get_display_price }} {{ object.currency }}</p>
         </div>
     </div>
     <button type="button" id="checkout-button">Buy</button>
