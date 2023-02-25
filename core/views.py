@@ -41,6 +41,7 @@ class DetailItemView(DetailView):
 class CreateCheckoutSessionView(View):
     def get(self, request, *args, **kwargs):
         item = Item.objects.get(id=self.kwargs['pk'])
+        stripe.api_key = settings.STRIPE_SECRET_KEY
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[{
@@ -84,6 +85,7 @@ class OrderView(DetailView):
 
 class CreateOrderCheckoutSessionView(View):
     def get(self, request, *args, **kwargs):
+        stripe.api_key = settings.STRIPE_SECRET_KEY
         order = Order.objects.filter(id=self.kwargs['pk']).select_related('discount', 'tax').prefetch_related('items').first()
         items = order.items.all()
         discounts = []
